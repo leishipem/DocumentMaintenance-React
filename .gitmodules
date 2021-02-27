@@ -1,0 +1,9 @@
+[submodule "crud"]
+	path = crud
+	url = /crud
+[submodule "web"]
+	path = web
+	url = /web
+[submodule "server"]
+	path = server
+	url = /server

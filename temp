@@ -1,0 +1,85 @@
+
+import Axios from 'axios';
+import React from 'react';
+
+export default (props) => {
+  const [option, setOption] = React.useState('');
+  const [fieldValue, setFieldValue] = React.useState('');
+  const {
+    faculty,
+    department,
+    yearOfPublication,
+    paperTitle,
+    chapterPublished,
+    conferenceName,
+    conferenceProceedingTitle,
+    region,
+    issn,
+    id,
+    publisherName,
+  } = props.presentation;
+
+  const handleDelete = async () => {
+    console.log('deleting');
+    const response = await Axios.post(
+      `http://localhost:3005/api/presentations/${id}/delete`
+    );
+    window.location.reload(false);
+  };
+
+  const handleUpdate = async () => {
+    const response = await Axios.post(
+      `http://localhost:3005/api/presentations/${id}/${option}/update`,
+      { value: fieldValue }
+    );
+    console.log(response);
+    window.location.reload(false)
+  };
+  return (
+    <div className='items__item presentation'>
+      <button onClick={handleDelete}>Delete{id}</button>
+
+      <select onChange={(e) => setOption(e.target.value)} value={option}>
+        <option></option>
+        {[
+          'department',
+          'faculty',
+          'yearOfPublication',
+          'paperTitle',
+          'chapterPublished',
+        ].map((col) => (
+          <option value={col}> {col}</option>
+        ))}
+      </select>
+
+      {option && (
+        <>
+          <input
+            type='text'
+            value={fieldValue}
+            onChange={(e) => setFieldValue(e.target.value)}
+          />
+
+          <br />
+
+          <button onClick={handleUpdate}>update</button>
+        </>
+      )}
+
+      <ul className='lists'>
+        <li className='list'>Department: {department}</li>
+        <li className='list'>Faculty: {faculty}</li>
+        <li className='list'>Year of Publication; {yearOfPublication}</li>
+        <li className='list'>Paper Title: {paperTitle}</li>
+        <li className='list'>Chapter Published: {chapterPublished}</li>
+        <li className='list'>
+          Conference Proceding Title: {conferenceProceedingTitle}
+        </li>
+        <li className='list'>Conference Name: {conferenceName}</li>
+        <li className='list'>Region: {region}</li>
+        <li className='list'>ISSN: {issn}</li>
+        <li className='list'>Publisher Name: {publisherName}</li>
+      </ul>
+    </div>
+  );
+};
